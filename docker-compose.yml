@@ -39,7 +39,7 @@ services:
     environment:
       - MONGO_URL=${MONGO_URL}
       - POSTGRES_URL=${POSTGRES_URL}
-    command: npm run start:dev
+    command: npm i && npm run prisma:migrate:postgres && npm run prisma:migrate:mongodb && npm run build && npm run start:prod
     ports:
       - "${APP_PORT}:3000"
     depends_on:
