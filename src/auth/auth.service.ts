@@ -6,11 +6,11 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { Prisma, User } from '@prisma/client';
+import { Prisma, User } from '@prisma/postgres/client';
 import { UserService } from 'src/user/user.service';
 import { randomBytes } from 'crypto';
 import { readPrivateKey } from 'src/middlewares/reader';
-import { PrismaPostgresService } from 'src/prisma/prisma.service';
+import { PrismaPostgresService } from 'src/prisma/potgres.service';
 import { bcryptCompare } from 'src/utilities/bcrypt.util';
 import { BusinessService } from 'src/business/business.service';
 import { ROLE } from 'src/common/enum';

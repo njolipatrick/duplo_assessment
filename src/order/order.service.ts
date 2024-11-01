@@ -3,12 +3,10 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { OrderStatus, Prisma } from '@prisma/client';
+import { OrderStatus, Prisma } from '@prisma/postgres/client';
 import { IAuth } from 'src/common/interface/interface';
-import {
-  PrismaMongoService,
-  PrismaPostgresService,
-} from 'src/prisma/prisma.service';
+import { PrismaMongoService } from 'src/prisma/mongo.service';
+import { PrismaPostgresService } from 'src/prisma/potgres.service';
 import { generateRandomCode } from 'src/utilities/util';
 
 @Injectable()
@@ -69,6 +67,7 @@ export class OrderService {
         user_id: authUser.id,
         business_id: order.business_id,
         status,
+        order_id: order.id,
         department_id: order.department_id,
         amount: order.amount,
         metadata: order,

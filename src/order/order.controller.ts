@@ -5,7 +5,7 @@ import { AuthenticatedUser } from 'src/auth/auth.guard';
 import { IAuth } from 'src/common/interface/interface';
 import { Response } from 'express';
 import { SuccessResponse } from 'src/utilities/response.util';
-import { OrderStatus } from '@prisma/client';
+import { OrderStatus } from '@prisma/postgres/client';
 
 @Controller('order')
 export class OrderController {

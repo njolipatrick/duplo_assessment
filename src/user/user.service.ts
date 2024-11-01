@@ -3,8 +3,8 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { User, Prisma } from '@prisma/client';
-import { PrismaPostgresService } from 'src/prisma/prisma.service';
+import { User, Prisma } from '@prisma/postgres/client';
+import { PrismaPostgresService } from 'src/prisma/potgres.service';
 import { bcryptHash } from 'src/utilities/bcrypt.util';
 
 @Injectable()

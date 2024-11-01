@@ -4,8 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateDepartmentDto } from './dto/create-department.dto';
-import { Prisma } from '@prisma/client';
-import { PrismaPostgresService } from 'src/prisma/prisma.service';
+import { Prisma } from '@prisma/postgres/client';
+import { PrismaPostgresService } from 'src/prisma/potgres.service';
 import { capitalizeWord } from 'src/utilities/util';
 import { mailer } from 'src/utilities/mailer.util';
 import { ROLE } from 'src/common/enum';
