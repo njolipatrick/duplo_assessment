@@ -1,0 +1,145 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../node_modules/@prisma/postgres/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model Business {
+  id             String           @id @default(uuid())
+  name           String
+  address        String?
+  industry       String
+  owner          User?            @relation(fields: [owner_id], references: [id])
+  owner_id       String?
+  departments    Department[]
+  orders         Order[]
+  created_at     DateTime?        @default(now())
+  updated_at     DateTime?        @updatedAt
+  deleted_at     DateTime?
+  BusinessUser   BusinessUser[]
+  UserDepartment UserDepartment[]
+  Invite         Invite[]
+}
+
+enum UserRole {
+  BUSINESS_OWNER
+  DEPARTMENT_HEAD
+  EMPLOYEE
+  DULPO_ADMIN
+}
+
+model User {
+  id             String           @id @default(uuid())
+  full_name      String?
+  password       String?
+  role           UserRole?
+  email          String?          @unique
+  orders         Order[]
+  created_at     DateTime?        @default(now())
+  updated_at     DateTime?        @updatedAt
+  deleted_at     DateTime?
+  Business       Business[]
+  BusinessUser   BusinessUser[]
+  UserDepartment UserDepartment[]
+  Department     Department[]
+  Invite         Invite[]
+}
+
+model BusinessUser {
+  id          String    @id @default(uuid())
+  user        User      @relation(fields: [user_id], references: [id])
+  user_id     String
+  business    Business  @relation(fields: [business_id], references: [id])
+  business_id String
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @updatedAt
+  deleted_at  DateTime?
+}
+
+model Department {
+  id             String          @id @default(uuid())
+  name           String
+  business       Business        @relation(fields: [business_id], references: [id])
+  business_id    String
+  head           User?           @relation(fields: [head_id], references: [id])
+  head_id        String?
+  created_at     DateTime?       @default(now())
+  updated_at     DateTime?       @updatedAt
+  Order          Order[]
+  UserDepartment UserDepartment?
+  Invite         Invite?
+}
+
+enum OrderStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Order {
+  id            String      @id @default(uuid())
+  curator       User?       @relation(fields: [curator_id], references: [id])
+  curator_id    String?
+  item          String?
+  description   String?
+  amount        Int?
+  status        OrderStatus @default(PENDING)
+  reference     String?
+  order_date    DateTime?   @default(now())
+  business      Business?   @relation(fields: [business_id], references: [id])
+  business_id   String?
+  department    Department? @relation(fields: [department_id], references: [id])
+  department_id String?
+  updated_at    DateTime?   @updatedAt
+  created_at    DateTime?   @default(now())
+  deleted_at    DateTime?
+}
+
+model UserDepartment {
+  id            String     @id @default(uuid())
+  user          User       @relation(fields: [user_id], references: [id])
+  user_id       String
+  department    Department @relation(fields: [department_id], references: [id])
+  department_id String     @unique
+  business      Business   @relation(fields: [business_id], references: [id])
+  business_id   String
+  updated_at    DateTime   @updatedAt
+  deleted_at    DateTime?
+  created_at    DateTime   @default(now())
+}
+
+model Invite {
+  id            String      @id @default(uuid())
+  invited_by    User?       @relation(fields: [invited_by_id], references: [id])
+  invited_by_id String?
+  department    Department? @relation(fields: [department_id], references: [id])
+  department_id String?     @unique
+  business      Business?   @relation(fields: [business_id], references: [id])
+  business_id   String?
+  email         String
+  role          UserRole
+  updated_at    DateTime?   @updatedAt
+  deleted_at    DateTime?
+  created_at    DateTime?   @default(now())
+}
+
+model Session {
+  id            String    @id @default(uuid())
+  session_token String?
+  parent        String?
+  child         String?
+  user_id       String?
+  updated_at    DateTime? @updatedAt
+  created_at    DateTime? @default(now())
+  deleted_at    DateTime?
+}

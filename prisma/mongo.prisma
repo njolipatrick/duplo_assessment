@@ -1,0 +1,24 @@
+// This is your Prisma schema file
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../node_modules/@prisma/mongo/client"
+}
+
+model TransactionLog {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  user_id       String
+  business_id   String
+  order_id      String
+  status        String
+  department_id String
+  amount        Int
+  metadata      Json
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+}
