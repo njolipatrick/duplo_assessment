@@ -32,7 +32,7 @@ export class OrderController {
   findOne(@Param('id') id: string) {
     return this.orderService.findOne(+id);
   }
-  @Patch(':id')
+  @Patch(':id/approve')
   async completeOrder(
     @Param('id') id: string,
     @Res() res: Response,
@@ -40,11 +40,11 @@ export class OrderController {
   ) {
     return SuccessResponse(
       res,
-      await this.orderService.orderStatus(id, authUser, OrderStatus.REJECTED),
+      await this.orderService.orderStatus(id, authUser, OrderStatus.APPROVED),
       'Order Completed',
     );
   }
-  @Patch(':id')
+  @Patch(':id/reject')
   async rejectOrder(
     @Param('id') id: string,
     @Res() res: Response,

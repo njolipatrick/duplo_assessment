@@ -3,6 +3,7 @@ import { DepartmentService } from './department.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { AuthenticatedUser } from 'src/auth/auth.guard';
 import { IAuth } from 'src/common/interface/interface';
+import { ROLE } from 'src/common/enum';
 
 @Controller('department')
 export class DepartmentController {
@@ -11,7 +12,7 @@ export class DepartmentController {
   @Post()
   create(
     @Body() createDepartmentDto: CreateDepartmentDto,
-    @AuthenticatedUser() { business_id }: IAuth,
+    @AuthenticatedUser([ROLE.BUSINESS_OWNER]) { business_id }: IAuth,
   ) {
     return this.departmentService.create({
       ...createDepartmentDto,
